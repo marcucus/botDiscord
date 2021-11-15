@@ -5,7 +5,8 @@ import itertools
 import math
 import random
 from idlelib import query
-
+from os import listdir
+from os.path import isfile, join
 import ffmpeg
 import discord
 import youtube_dl
@@ -79,6 +80,21 @@ async def cut(ctx, channel: discord.TextChannel = None):
     await ctx.channel.send("ÇA C'EST DES VRAIS COUTEAUX !")
 
 
+@client.command(name='songs')
+async def cut(ctx, channel: discord.TextChannel = None):
+    await ctx.message.delete()
+    fi = os.listdir("C:/Users/marqu/Downloads/musique")
+    embeds = discord.Embed(
+        title='Chemin d\'accès pour les musiques C:/Users/marqu/Downloads/musique/<lenomdusong.mp3> remplacer les / '
+              'par des anti-slash !',
+        colour=0x6600ff)
+    for i in range(len(fi)):
+        embeds.add_field(name=i,
+                         value=fi[i],
+                         inline=True)
+    await ctx.author.send(embed=embeds)
+
+
 @client.command(name='gang')
 async def gang(ctx, channel: discord.TextChannel = None):
     await ctx.message.delete()
@@ -122,6 +138,8 @@ async def help_(ctx):
     embed.add_field(name="**help**", value="Pour afficher ce message", inline=True)
     embed.add_field(name="**join**", value="Pour que le bot rejoint ton salon", inline=True)
     embed.add_field(name="**play**", value="Pour que le bot lance une musique (mettre un URL après play)",
+                    inline=True)
+    embed.add_field(name="**songs**", value="Pour voir les sons stockés lisibles par le bot",
                     inline=True)
     embed.add_field(name="**leave**", value="Pour que le bot quitte le salon", inline=True)
     embed.add_field(name="**volume**", value="Pour ajuster le volume du bot en %", inline=True)
