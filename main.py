@@ -609,4 +609,4 @@ class Music(commands.Cog):
 
 client.add_cog(Music(client))
 
-client.run("OTA4NDc5OTY5NDAxOTIxNTM3.YY2V5w.E47wsRj7BfYnmVIeoMiAplbd7Qk")
+client.run(os.getenv("TOKEN"))
