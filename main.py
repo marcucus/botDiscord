@@ -85,14 +85,14 @@ async def cut(ctx, channel: discord.TextChannel = None):
     await ctx.message.delete()
     fi = os.listdir("C:/Users/marqu/Downloads/musique")
     embeds = discord.Embed(
-        title='Chemin d\'accès pour les musiques C:/Users/marqu/Downloads/musique/<lenomdusong.mp3> remplacer les / '
-              'par des anti-slash !',
+        title='Voici la liste des sons stockés localement, mettre la commande puis le nom du son .mp3',
         colour=0x6600ff)
     for i in range(len(fi)):
         embeds.add_field(name=i,
                          value=fi[i],
                          inline=True)
     await ctx.author.send(embed=embeds)
+    await ctx.message.delete()
 
 
 @client.command(name='gang')
@@ -138,6 +138,8 @@ async def help_(ctx):
     embed.add_field(name="**help**", value="Pour afficher ce message", inline=True)
     embed.add_field(name="**join**", value="Pour que le bot rejoint ton salon", inline=True)
     embed.add_field(name="**play**", value="Pour que le bot lance une musique (mettre un URL après play)",
+                    inline=True)
+    embed.add_field(name="**local**", value="Pour lire une musique stockée localement",
                     inline=True)
     embed.add_field(name="**songs**", value="Pour voir les sons stockés lisibles par le bot",
                     inline=True)
@@ -435,6 +437,7 @@ class Music(commands.Cog):
             return
 
         ctx.voice_state.voice = await destination.connect()
+        await ctx.message.delete()
 
     @commands.command(name='summon')
     @commands.has_permissions(manage_guild=True)
@@ -452,6 +455,7 @@ class Music(commands.Cog):
             return
 
         ctx.voice_state.voice = await destination.connect()
+        await ctx.message.delete()
 
     @commands.command(name='leave', aliases=['disconnect'])
     @commands.has_permissions(manage_guild=True)
@@ -463,6 +467,7 @@ class Music(commands.Cog):
 
         await ctx.voice_state.stop()
         del self.voice_states[ctx.guild.id]
+        await ctx.message.delete()
 
     @commands.command(name='volume')
     async def _volume(self, ctx: commands.Context, *, volume: int):
@@ -491,6 +496,7 @@ class Music(commands.Cog):
         if not ctx.voice_state.is_playing and ctx.voice_state.voice.is_playing():
             ctx.voice_state.voice.pause()
             await ctx.message.add_reaction('⏯')
+            await ctx.message.delete()
 
     @commands.command(name='resume')
     @commands.has_permissions(manage_guild=True)
@@ -500,6 +506,7 @@ class Music(commands.Cog):
         if not ctx.voice_state.is_playing and ctx.voice_state.voice.is_paused():
             ctx.voice_state.voice.resume()
             await ctx.message.add_reaction('⏯')
+            await ctx.message.delete()
 
     @commands.command(name='stop')
     @commands.has_permissions(manage_guild=True)
@@ -511,6 +518,7 @@ class Music(commands.Cog):
         if not ctx.voice_state.is_playing:
             ctx.voice_state.voice.stop()
             await ctx.message.add_reaction('⏹')
+            await ctx.message.delete()
 
     @commands.command(name='skip')
     async def _skip(self, ctx: commands.Context):
@@ -618,14 +626,14 @@ class Music(commands.Cog):
                 await ctx.voice_state.songs.put(song)
                 await ctx.send('J\'AIME BEAUCOUP CE QUE TU AJOUTES EH GANG {}'.format(str(source)))
 
-        await ctx.send(f'Now playing: {query}')
-
     @commands.command()
-    async def playS(self, ctx, *, query):
+    async def local(self, ctx, *, query):
         """Plays a file from the local filesystem"""
-
-        source = discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(query))
+        qeri = "C:/Users/marqu/Downloads/musique/" + query
+        source = discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(qeri))
         ctx.voice_client.play(source, after=lambda e: print(f'Player error: {e}') if e else None)
+        await ctx.send("LIBEREZ TOUT MES COPAINS EH GANG : " + query)
+        await ctx.message.delete()
 
     @_join.before_invoke
     @_play.before_invoke
