@@ -3,6 +3,7 @@ import asyncio
 import functools
 import itertools
 import math
+import publicip
 import random
 from idlelib import query
 from os import listdir
@@ -27,6 +28,12 @@ players = {}
 @client.event
 async def on_ready():
     print("Le bot est prêt à planter")
+
+
+@client.command(name='vasco')
+async def squid(ctx):
+    await ctx.message.delete()
+    await ctx.send("SA MÈRE LA PUTE A LUI")
 
 
 @client.command(name='supp')
@@ -152,6 +159,8 @@ async def help_(ctx):
     embed.add_field(name="**skip**", value="Pour passer à la musique suivante", inline=True)
     embed.add_field(name="**queue**", value="Pour afficher la file d'attente des sons", inline=True)
     embed.add_field(name="**remove**", value="Pour enlever un son de la file d'attente, spécifier le numéro du son",
+                    inline=True)
+    embed.add_field(name="**vasco**", value="Pour insulter la pute de mère de vasco",
                     inline=True)
     embed.set_footer(text="Par Adrien Marques")
     await ctx.author.send(embed=embed)
